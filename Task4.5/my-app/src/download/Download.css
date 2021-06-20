@@ -1,0 +1,23 @@
+.download-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+}
+.download-content h1{
+   font-size: 48px;
+   font-weight: 600;
+   letter-spacing: 1px;
+   margin-bottom: 2rem;
+}
+.download-content p{
+    font-size: 1.3rem !important;
+}
+.download-btns{
+    padding-top: 3rem;
+}
+.download-btns img{
+    display: inline-block;
+    margin-right: 2rem;
+}

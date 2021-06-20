@@ -1,0 +1,24 @@
+#faqs p.lead{
+    font-size: 1.4rem !important;
+    margin-bottom: 2rem;
+}
+.card{
+    margin: 1rem 0;
+    background: #f5f7fa;
+    border: none;
+}
+.card a.btn-block{
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+i.fa-plus{
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    cursor: pointer;
+}
+.card-body{
+    font-size: 1.3rem;
+    line-height: 1.5;
+}

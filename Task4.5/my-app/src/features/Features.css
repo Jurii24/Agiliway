@@ -1,0 +1,84 @@
+.section-heading h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+}
+
+.feature-list {
+    padding-top: 15px;
+}
+
+.feature-list .feature-item {
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+}
+
+.elipse {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+}
+
+.elipse.red {
+    background-color: #ffecef;
+}
+
+.elipse.lred {
+    background-color: #fdeee4;
+}
+
+.elipse.blue {
+    background-color: #f4f4ff;
+}
+
+.elipse.yellow {
+    background-color: #fff6d3;
+}
+
+.elipse.green {
+    background-color: #e4ffee;
+}
+
+.elipse.lblue {
+    background-color: #eaf9ff;
+}
+
+.elipse img {
+    display: block;
+    margin: auto;
+    width: 35px;
+    height: 35px;
+}
+
+.elipse-info {
+    margin-left: 20px;
+}
+
+.elipse-info.zero{
+    margin-left: 0px;
+}
+
+.elipse-info h3 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.elipse-info h3.red {
+    color: #f6737f;
+}
+
+.elipse-info h3.blue {
+    color: #2563ff;
+}
+
+.elipse-info h3.green {
+    color: #40975f;
+}
+
+.feature-img img {
+    display: block;
+    max-width: 85%;
+}

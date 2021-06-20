@@ -1,0 +1,12 @@
+#facts .fact-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 4rem;
+}
+
+#facts .elipse-info {
+    margin-top: 1rem;
+    margin-left: 0 !important;
+}

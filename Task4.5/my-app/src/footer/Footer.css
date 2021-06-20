@@ -1,0 +1,50 @@
+footer{
+    width: 100%;
+    background: #09142e;
+    padding: 2rem 0;
+}
+.logo{
+    color: #fff;
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+.logo span{
+    color: #fcae61;
+}
+.nav-link{
+    color: #fff;
+    font-size: 1.5rem;
+    transition: all 0.4s ease-in-out;
+}
+.nav-link:hover,
+.nav-link:focus{
+    color: #2563ff;
+}
+.social-icon {
+    margin: 2rem 0;
+}
+.social-icon i{
+    display: inline-block;
+    margin: 0 1.5rem;
+    font-size: 2rem;
+    color: #273043;
+    cursor: pointer;
+    transition: all 0.4s ease-in-out;
+    transform: scale(1);
+}
+.social-icon i:hover{
+    color: #fff;
+    transform: scale(1.3);
+}
+
+footer .copyright{
+    font-size: 14px;
+    color: #fff;
+    margin: 3rem 0 0;
+}
+
+.imgFoot {
+    height: 30px; 
+    width: 30px;
+}

@@ -1,0 +1,19 @@
+.btn {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.main-btn {
+  background: #2500f9 !important;
+  color: #fff !important;
+  padding: 0.8rem 1.5rem !important;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 2.5rem !important;
+  margin-right: 15px;
+}
+
+.navbar a.faq-btn:hover, .main-btn:hover, .faq-btn.active {
+  opacity: 0.7;
+}

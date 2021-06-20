@@ -1,0 +1,6 @@
+.ultimate-features .fact-item {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 1rem 0rem;
+}

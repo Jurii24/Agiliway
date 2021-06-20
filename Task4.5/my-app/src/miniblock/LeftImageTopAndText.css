@@ -1,0 +1,16 @@
+.feature-item.column {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 1rem 2rem;
+}
+
+.feature-item.column .elipse {
+    margin: 0;
+    margin-bottom: 1rem;
+    margin-left: 0 !important;
+}
+
+.feature-item.column .elipse-info {
+    margin-left: 0 !important;
+}

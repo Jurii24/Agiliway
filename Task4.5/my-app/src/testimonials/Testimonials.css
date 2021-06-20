@@ -1,0 +1,66 @@
+#testimonials{
+    position: relative;
+}
+.star-rating{
+    color: #ffcc00;
+    margin: 1rem 0 2rem;
+    font-size: 1.2rem;
+}
+.star-rating.half-rate i:nth-child(5) {
+    color: #242f51;
+}
+.user{
+    display: flex;
+    align-items: center;
+    margin: 2rem 0;
+}
+.user-pic{
+    width: 50px;
+    margin-right: 2rem;
+}
+.user-name h5{
+    margin-bottom: 2px;
+    font-size: 1.4rem;
+}
+.user-name p{
+    margin-bottom: 0;
+}
+
+.owl-nav{
+    position: absolute;
+    right: 2rem;
+    bottom: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.owl-nav button{
+    outline: none;
+    border: none;
+    width: 4rem;
+    height: 4rem;
+    background: #eff3f8 !important;
+    margin: 1rem;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.owl-nav button:nth-child(1)::before{
+    content: '';
+    height: 80%;
+    width: 1px;
+    background: #eff3f8;
+    position: absolute;
+  right: -10px;
+    top: 5px;
+}
+
+.owl-nav button span{
+    font-size: 5rem ;
+   margin: 0;
+   padding: 0;
+   color: #2500f9;
+}

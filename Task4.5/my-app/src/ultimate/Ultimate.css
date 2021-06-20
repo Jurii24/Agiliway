@@ -1,0 +1,15 @@
+.ultimate-features .elipse {
+    margin: 0;
+    margin-bottom: 1rem;
+    margin-left: 0 !important;
+}
+
+.ultimate-features .elipse-info {
+    margin-left: 0 !important;
+    text-align: left;
+}
+
+.ultimate-features .elipse-info h3 {
+    text-align: left;
+    margin-bottom: 0.8rem;
+}
