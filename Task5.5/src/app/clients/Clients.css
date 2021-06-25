@@ -1,0 +1,4 @@
+#clients .client-item img {
+    max-width: 80% !important;
+    display: block;
+}
