@@ -1,0 +1,1 @@
+{"version":3,"sources":["app/components/button/core.cljs"],"mappings":";AAEA,oCAAA,pCAAMA,gFAAQC;AAAd,AAAA,0FAAA,wEAAA,2CAAA,qDAAA,YACgCA","names":["app.components.button.core/button","text"],"sourcesContent":["(ns app.components.button.core)\n\n(defn button [text]\n  [:a.btn.main-btn {:href \"#\"}  text])"]}
