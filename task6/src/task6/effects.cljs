@@ -1,0 +1,1 @@
+(ns task6.effects)
