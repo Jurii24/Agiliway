@@ -15,7 +15,7 @@
 ;   - `alt+up` and `alt+down` traverse up and down the REPL command history
 ;      when the cursor is after the last contents at the prompt
 ;   - Clojure lines in stack traces are peekable and clickable.
-clj꞉shadow.user꞉> 
+clj꞉shadow.user꞉>  ; Use `alt+enter` to evaluate
 ; Creating cljs repl session...
 ; Connecting cljs repl: shadow-cljs...
 ;   The Calva Connection Log might have more connection progress information.
@@ -24,73 +24,6 @@ clj꞉shadow.user꞉> 
 ;    *Calva: Toggle REPL connection*
 ;    (There is a button in the status bar for this)
 ; Jack-in done.
-cljs꞉cljs.user꞉> 
-nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:6
- Use of undeclared Var task6.events/db
---------------------------------------------------------------------------------
-
-clj꞉task6.events꞉> 
-nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:7
- Use of undeclared Var task6.events/db
---------------------------------------------------------------------------------
-
-clj꞉task6.events꞉> 
-nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:6
- Use of undeclared Var task6.events/db
---------------------------------------------------------------------------------
-
-clj꞉task6.events꞉> 
-nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:3
- Use of undeclared Var task6.events/db
---------------------------------------------------------------------------------
-
-clj꞉task6.events꞉> 
-nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:1
- Use of undeclared Var task6.events/db
---------------------------------------------------------------------------------
-
-clj꞉task6.events꞉> 
-false
-clj꞉task6.events꞉> 
-true
-clj꞉task6.events꞉> 
-nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:6
- Use of undeclared Var task6.subs/db
---------------------------------------------------------------------------------
-
-clj꞉task6.subs꞉> 
-nil
-; ------ WARNING - :fn-arity -----------------------------------------------------
-;  Resource: <eval>:1:1
- Wrong number of args (4) passed to cljs.core/filter
---------------------------------------------------------------------------------
-
-clj꞉task6.subs꞉> 
-"0.23132000"
-clj꞉task6.subs꞉> 
-nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:42
- Use of undeclared Var task6.subs/db
---------------------------------------------------------------------------------
-
-clj꞉task6.subs꞉> 
-()
-clj꞉task6.subs꞉> 
-()
-clj꞉task6.subs꞉> 
-"()"
-clj꞉task6.subs꞉> 
-; nREPL Connection was closed
+cljs꞉cljs.user꞉>  ; Use `alt+enter` to evaluate
+"34896.73000000"
+cljs꞉task6.subs꞉> 
