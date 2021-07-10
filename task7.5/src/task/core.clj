@@ -6,11 +6,11 @@
    :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler]))
 
 (defmulti calculate (fn [c] (:c c)))
-(defmethod calculate "+" [a b] (+ (:a a) (:b b)))
-(defmethod calculate "-" [a b] (- (:a a) (:b b)))
-
-
-(calculate "+" 2 1)
+(defmethod calculate "+" [m] (+ (:a m) (:b m)))
+(defmethod calculate "-" [m] (- (:a m) (:b m)))
+(defmethod calculate "*" [m] (* (:a m) (:b m)))
+(defmethod calculate "/" [m] (if (= 0.0 (:b m)) "divide on zero!!!" (/ (:a m) (:b m))))
+(defmethod calculate "%" [m] (rem (:a m) (:b m)))
 
 (defn handle-request [handler]
   (fn [_ input-stream output-stream context]
@@ -31,6 +31,6 @@
            b (Double. (str (last data1)))
            c (str (nth data1 2))
            decision (calculate (assoc {} :a a :b b :c c))
-           calc (str data1 "=" decision)]
+           calc (str a c b "=" decision)]
      {:status 200
       :body   calc}))))
