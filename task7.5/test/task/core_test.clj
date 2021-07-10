@@ -1,4 +1,4 @@
-(ns task7.5-test
+(ns task.core-test
   (:require [clojure.test :refer :all]
             [task.core :refer :all]))
 

@@ -5,6 +5,13 @@
    :name       task.core.ApiHandler
    :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler]))
 
+(defmulti calculate (fn [c] (:c c)))
+(defmethod calculate "+" [a b] (+ (:a a) (:b b)))
+(defmethod calculate "-" [a b] (- (:a a) (:b b)))
+
+
+(calculate "+" 2 1)
+
 (defn handle-request [handler]
   (fn [_ input-stream output-stream context]
     (with-open [in  (io/reader input-stream)
@@ -19,7 +26,11 @@
   (handle-request
    (fn [event context]
      (let [data (json/read-str (:body event) :key-fn keyword)
-           data1 (data :expr)
-           calc (str data "///" data1)]
+           data1 (vec (:expr data))
+           a (Double. (str (first data1)))
+           b (Double. (str (last data1)))
+           c (str (nth data1 2))
+           decision (calculate (assoc {} :a a :b b :c c))
+           calc (str data1 "=" decision)]
      {:status 200
-      :body   data1}))))
+      :body   calc}))))
