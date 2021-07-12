@@ -1,0 +1,11 @@
+{
+	"name": "storage1",
+	"date": "2021-07-09",
+	"items": [
+		{
+			"name": "computers",
+			"price": 1000,
+			"count": 100
+		}
+	]
+}
