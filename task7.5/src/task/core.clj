@@ -1,6 +1,7 @@
 (ns task.core
   (:require [clojure.data.json :as json]
-            [clojure.java.io   :as io])
+            [clojure.java.io   :as io]
+            [clojure.string :as string])
   (:gen-class
    :name       task.core.ApiHandler
    :implements [com.amazonaws.services.lambda.runtime.RequestStreamHandler]))
@@ -11,6 +12,12 @@
 (defmethod calculate "*" [m] (* (:a m) (:b m)))
 (defmethod calculate "/" [m] (if (= 0.0 (:b m)) "divide on zero!!!" (/ (:a m) (:b m))))
 (defmethod calculate "%" [m] (rem (:a m) (:b m)))
+
+(defn positions [pred coll]
+  (keep-indexed (fn [idx x]
+                  (when (pred x)
+                    idx))
+                coll))
 
 (defn handle-request [handler]
   (fn [_ input-stream output-stream context]
@@ -26,11 +33,12 @@
   (handle-request
    (fn [event context]
      (let [data (json/read-str (:body event) :key-fn keyword)
-           data1 (vec (:expr data))
-           a (Double. (str (first data1)))
-           b (Double. (str (last data1)))
-           c (str (nth data1 2))
+           data1 (vec (string/split (:expr data) #" "))
+           a (Double. (first data1))
+           b (Double. (last data1))
+           c (second data1)
            decision (calculate (assoc {} :a a :b b :c c))
-           calc (str a c b "=" decision)]
+           ;;calc (pos)
+           ]
      {:status 200
-      :body   calc}))))
+      :body   decision}))))
