@@ -167,7 +167,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/task85/dev/1626790039136-2021-07-20T14:07:19.136Z/task7.5-0.1.0-SNAPSHOT-standalone.jar"
+          "S3Key": "serverless/task85/dev/1626799128088-2021-07-20T16:38:48.088Z/task7standalone.jar"
         },
         "Handler": "task.core.ApiHandler",
         "Runtime": "java11",
@@ -192,7 +192,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/task85/dev/1626790039136-2021-07-20T14:07:19.136Z/task7.5-0.1.0-SNAPSHOT-standalone.jar"
+          "S3Key": "serverless/task85/dev/1626799128088-2021-07-20T16:38:48.088Z/task7standalone.jar"
         },
         "Handler": "task.core.ApiHandler",
         "Runtime": "java11",
@@ -210,7 +210,7 @@
         "SimpleHttpLogGroup"
       ]
     },
-    "SimpleLambdaLambdaVersionianxR9hYWJLugivD0POxaFEYFsyoe65nnixRcT8WM": {
+    "SimpleLambdaLambdaVersionJCDgEN66LbjGS7376AkHC19bxZjphXu4Sknev1H2ywA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
@@ -220,7 +220,7 @@
         "CodeSha256": "lMMCM8LI+wjQfwVlmh5mFlNKVfTOiy9K6r5Kkw5ERRQ="
       }
     },
-    "SimpleHttpLambdaVersionClerSSfAVt4I0WfibxFxULkBLIfhoaAqybXh67rLQ": {
+    "SimpleHttpLambdaVersion4tYU81d8PCXJG09GkzNgcz1erbBmeNnuMkZs9ZKw": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
@@ -230,92 +230,27 @@
         "CodeSha256": "lMMCM8LI+wjQfwVlmh5mFlNKVfTOiy9K6r5Kkw5ERRQ="
       }
     },
-    "ApiGatewayRestApi": {
-      "Type": "AWS::ApiGateway::RestApi",
+    "HttpApi": {
+      "Type": "AWS::ApiGatewayV2::Api",
       "Properties": {
         "Name": "dev-task85",
-        "EndpointConfiguration": {
-          "Types": [
-            "EDGE"
-          ]
-        },
-        "Policy": ""
+        "ProtocolType": "HTTP"
       }
     },
-    "ApiGatewayResourceCal": {
-      "Type": "AWS::ApiGateway::Resource",
+    "HttpApiStage": {
+      "Type": "AWS::ApiGatewayV2::Stage",
       "Properties": {
-        "ParentId": {
-          "Fn::GetAtt": [
-            "ApiGatewayRestApi",
-            "RootResourceId"
-          ]
+        "ApiId": {
+          "Ref": "HttpApi"
         },
-        "PathPart": "cal",
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
+        "StageName": "$default",
+        "AutoDeploy": true,
+        "DefaultRouteSettings": {
+          "DetailedMetricsEnabled": false
         }
       }
     },
-    "ApiGatewayMethodCalPost": {
-      "Type": "AWS::ApiGateway::Method",
-      "Properties": {
-        "HttpMethod": "POST",
-        "RequestParameters": {},
-        "ResourceId": {
-          "Ref": "ApiGatewayResourceCal"
-        },
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        },
-        "ApiKeyRequired": false,
-        "AuthorizationType": "NONE",
-        "Integration": {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":apigateway:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":lambda:path/2015-03-31/functions/",
-                {
-                  "Fn::GetAtt": [
-                    "SimpleHttpLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "/invocations"
-              ]
-            ]
-          }
-        },
-        "MethodResponses": []
-      },
-      "DependsOn": [
-        "SimpleHttpLambdaPermissionApiGateway"
-      ]
-    },
-    "ApiGatewayDeployment1626790037604": {
-      "Type": "AWS::ApiGateway::Deployment",
-      "Properties": {
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        },
-        "StageName": "dev"
-      },
-      "DependsOn": [
-        "ApiGatewayMethodCalPost"
-      ]
-    },
-    "SimpleHttpLambdaPermissionApiGateway": {
+    "SimpleHttpLambdaPermissionHttpApi": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
@@ -344,13 +279,51 @@
               },
               ":",
               {
-                "Ref": "ApiGatewayRestApi"
+                "Ref": "HttpApi"
               },
-              "/*/*"
+              "/*"
             ]
           ]
         }
       }
+    },
+    "HttpApiIntegrationSimpleHttp": {
+      "Type": "AWS::ApiGatewayV2::Integration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "IntegrationType": "AWS_PROXY",
+        "IntegrationUri": {
+          "Fn::GetAtt": [
+            "SimpleHttpLambdaFunction",
+            "Arn"
+          ]
+        },
+        "PayloadFormatVersion": "2.0",
+        "TimeoutInMillis": 10500
+      }
+    },
+    "HttpApiRoutePostDevCalc": {
+      "Type": "AWS::ApiGatewayV2::Route",
+      "Properties": {
+        "ApiId": {
+          "Ref": "HttpApi"
+        },
+        "RouteKey": "POST /dev/calc",
+        "Target": {
+          "Fn::Join": [
+            "/",
+            [
+              "integrations",
+              {
+                "Ref": "HttpApiIntegrationSimpleHttp"
+              }
+            ]
+          ]
+        }
+      },
+      "DependsOn": "HttpApiIntegrationSimpleHttp"
     }
   },
   "Outputs": {
@@ -365,7 +338,7 @@
     "SimpleLambdaLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SimpleLambdaLambdaVersionianxR9hYWJLugivD0POxaFEYFsyoe65nnixRcT8WM"
+        "Ref": "SimpleLambdaLambdaVersionJCDgEN66LbjGS7376AkHC19bxZjphXu4Sknev1H2ywA"
       },
       "Export": {
         "Name": "sls-task85-dev-SimpleLambdaLambdaFunctionQualifiedArn"
@@ -374,21 +347,30 @@
     "SimpleHttpLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "SimpleHttpLambdaVersionClerSSfAVt4I0WfibxFxULkBLIfhoaAqybXh67rLQ"
+        "Ref": "SimpleHttpLambdaVersion4tYU81d8PCXJG09GkzNgcz1erbBmeNnuMkZs9ZKw"
       },
       "Export": {
         "Name": "sls-task85-dev-SimpleHttpLambdaFunctionQualifiedArn"
       }
     },
-    "ServiceEndpoint": {
-      "Description": "URL of the service endpoint",
+    "HttpApiId": {
+      "Description": "Id of the HTTP API",
+      "Value": {
+        "Ref": "HttpApi"
+      },
+      "Export": {
+        "Name": "sls-task85-dev-HttpApiId"
+      }
+    },
+    "HttpApiUrl": {
+      "Description": "URL of the HTTP API",
       "Value": {
         "Fn::Join": [
           "",
           [
             "https://",
             {
-              "Ref": "ApiGatewayRestApi"
+              "Ref": "HttpApi"
             },
             ".execute-api.",
             {
@@ -397,13 +379,12 @@
             ".",
             {
               "Ref": "AWS::URLSuffix"
-            },
-            "/dev"
+            }
           ]
         ]
       },
       "Export": {
-        "Name": "sls-task85-dev-ServiceEndpoint"
+        "Name": "sls-task85-dev-HttpApiUrl"
       }
     }
   }

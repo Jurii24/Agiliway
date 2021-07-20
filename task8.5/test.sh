@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-URL="https://jtafkipzwc.execute-api.us-east-2.amazonaws.com/dev/cal"
+URL="https://q8bedwr637.execute-api.us-east-2.amazonaws.com/dev/calc"
 
 
 curl -XPOST $URL\
