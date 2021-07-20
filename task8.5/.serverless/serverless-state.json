@@ -10,7 +10,6 @@
       "region": "us-east-2",
       "timeout": 10,
       "memorySize": 1024,
-      "lambdaHashingVersion": "20201221",
       "stage": "dev",
       "versionFunctions": true,
       "compiledCloudFormationTemplate": {
@@ -182,7 +181,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/task85/dev/1626783290908-2021-07-20T12:14:50.908Z/task7.5-0.1.0-SNAPSHOT-standalone.jar"
+                "S3Key": "serverless/task85/dev/1626790039136-2021-07-20T14:07:19.136Z/task7.5-0.1.0-SNAPSHOT-standalone.jar"
               },
               "Handler": "task.core.ApiHandler",
               "Runtime": "java11",
@@ -207,7 +206,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/task85/dev/1626783290908-2021-07-20T12:14:50.908Z/task7.5-0.1.0-SNAPSHOT-standalone.jar"
+                "S3Key": "serverless/task85/dev/1626790039136-2021-07-20T14:07:19.136Z/task7.5-0.1.0-SNAPSHOT-standalone.jar"
               },
               "Handler": "task.core.ApiHandler",
               "Runtime": "java11",
@@ -225,7 +224,7 @@
               "SimpleHttpLogGroup"
             ]
           },
-          "SimpleLambdaLambdaVersionJCDgEN66LbjGS7376AkHC19bxZjphXu4Sknev1H2ywA": {
+          "SimpleLambdaLambdaVersionianxR9hYWJLugivD0POxaFEYFsyoe65nnixRcT8WM": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
@@ -235,7 +234,7 @@
               "CodeSha256": "lMMCM8LI+wjQfwVlmh5mFlNKVfTOiy9K6r5Kkw5ERRQ="
             }
           },
-          "SimpleHttpLambdaVersion4tYU81d8PCXJG09GkzNgcz1erbBmeNnuMkZs9ZKw": {
+          "SimpleHttpLambdaVersionClerSSfAVt4I0WfibxFxULkBLIfhoaAqybXh67rLQ": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
@@ -318,7 +317,7 @@
               "SimpleHttpLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1626783289362": {
+          "ApiGatewayDeployment1626790037604": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -380,7 +379,7 @@
           "SimpleLambdaLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SimpleLambdaLambdaVersionJCDgEN66LbjGS7376AkHC19bxZjphXu4Sknev1H2ywA"
+              "Ref": "SimpleLambdaLambdaVersionianxR9hYWJLugivD0POxaFEYFsyoe65nnixRcT8WM"
             },
             "Export": {
               "Name": "sls-task85-dev-SimpleLambdaLambdaFunctionQualifiedArn"
@@ -389,7 +388,7 @@
           "SimpleHttpLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "SimpleHttpLambdaVersion4tYU81d8PCXJG09GkzNgcz1erbBmeNnuMkZs9ZKw"
+              "Ref": "SimpleHttpLambdaVersionClerSSfAVt4I0WfibxFxULkBLIfhoaAqybXh67rLQ"
             },
             "Export": {
               "Name": "sls-task85-dev-SimpleHttpLambdaFunctionQualifiedArn"
@@ -518,7 +517,7 @@
         "timeout": 10,
         "runtime": "java11",
         "vpc": {},
-        "versionLogicalId": "SimpleLambdaLambdaVersionJCDgEN66LbjGS7376AkHC19bxZjphXu4Sknev1H2ywA"
+        "versionLogicalId": "SimpleLambdaLambdaVersionianxR9hYWJLugivD0POxaFEYFsyoe65nnixRcT8WM"
       },
       "simpleHttp": {
         "handler": "task.core.ApiHandler",
@@ -537,7 +536,7 @@
         "timeout": 10,
         "runtime": "java11",
         "vpc": {},
-        "versionLogicalId": "SimpleHttpLambdaVersion4tYU81d8PCXJG09GkzNgcz1erbBmeNnuMkZs9ZKw"
+        "versionLogicalId": "SimpleHttpLambdaVersionClerSSfAVt4I0WfibxFxULkBLIfhoaAqybXh67rLQ"
       }
     },
     "configValidationMode": "warn",
@@ -552,7 +551,7 @@
       },
       "package": {
         "artifact": "target/task7.5-0.1.0-SNAPSHOT-standalone.jar",
-        "artifactDirectoryName": "serverless/task85/dev/1626783290908-2021-07-20T12:14:50.908Z"
+        "artifactDirectoryName": "serverless/task85/dev/1626790039136-2021-07-20T14:07:19.136Z"
       },
       "functions": {
         "$ref": "$[\"service\"][\"functions\"]"
@@ -562,7 +561,7 @@
     "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/task85/dev/1626783290908-2021-07-20T12:14:50.908Z",
+    "artifactDirectoryName": "serverless/task85/dev/1626790039136-2021-07-20T14:07:19.136Z",
     "artifact": "task7.5-0.1.0-SNAPSHOT-standalone.jar"
   }
 }
