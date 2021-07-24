@@ -1,0 +1,1 @@
+web: java $JVM_OPTS -cp target/mtask9.jar clojure.main -m mtask9.server

@@ -1,0 +1,8 @@
+{:lein         {:profile "+shadow-cljs"}
+ :builds       {:app {:target     :browser
+                      :output-dir "resources/public/js"
+                      :asset-path "/js"
+                      :modules    {:app {:entries [mtask9.core]}}
+                      :devtools   {:after-load mtask9.core/mount-root}}}
+ :dev-http     {3000 {:root    "resources/public"
+                      :handler mtask9.handler/app}}}
