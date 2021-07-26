@@ -14,13 +14,13 @@
   [:p  text])
 
 (defn question [questions]
-  ;;(let [quest (first questions)
-        ;;questions (rest questions)
-    ;;    {title :question} quest]
+  (loop [quest (first questions)
+        questions (rest questions)]
 
-    (ques (:question (first questions)))
-    ;;(prn title)
-    ;;(if (>= (count questions) 1) (question questions)))
+    (ques (:question quest))
+    (prn (:question quest))
+    (if (>= (count questions) 1) 
+      (recur (first questions) (rest questions))))
     )
 
 (def mount-target
