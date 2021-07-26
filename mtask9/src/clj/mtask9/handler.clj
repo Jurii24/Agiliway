@@ -3,13 +3,37 @@
    [reitit.ring :as reitit-ring]
    [mtask9.middleware :refer [middleware]]
    [hiccup.page :refer [include-js include-css html5]]
-   [config.core :refer [env]]))
+   [config.core :refer [env]]
+   [clojure.data.json :as json]
+   ))
+
+(def survey (json/read-str (slurp "src/clj/mtask9/survey.json")
+                                :key-fn keyword))
+
+(defn ques [text]
+  [:p  text])
+
+(defn question [questions]
+  ;;(let [quest (first questions)
+        ;;questions (rest questions)
+    ;;    {title :question} quest]
+
+    (ques (:question (first questions)))
+    ;;(prn title)
+    ;;(if (>= (count questions) 1) (question questions)))
+    )
 
 (def mount-target
-  [:div#app
-   [:h2 "Welcome to mtask9"]
-   [:p "please wait while Figwheel/shadow-cljs is waking up ..."]
-   [:p "(Check the js console for hints if nothing exciting happens.)"]])
+  (let [{title :title
+         questions :questions}
+        survey]
+
+    [:div#app
+     [:h2 title]
+     [:p (str (first questions))]
+     [:div (question questions)]
+     [:p "s"]
+     [:p "(Check the js console for hints if nothing exciting happens.)"]]))
 
 (defn head []
   [:head
@@ -23,8 +47,9 @@
    (head)
    [:body {:class "body-container"}
     mount-target
-    (include-js "/js/app.js")
-    [:script "mtask9.core.init_BANG_()"]]))
+    (include-js "/js/aapp.js")
+    [:script "mtask9.core.init_BANG_()"]
+    ]))
 
 
 (defn index-handler

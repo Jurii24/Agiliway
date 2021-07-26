@@ -94,6 +94,7 @@
                                   [nrepl "0.8.3"]
                                   [thheller/shadow-cljs "2.14.3"]
                                   [pjstadig/humane-test-output "0.10.0"]
+                                  [org.clojure/data.json "2.0.1"]
                                   
  ]
 

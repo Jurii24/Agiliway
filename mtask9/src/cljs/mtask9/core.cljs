@@ -25,10 +25,14 @@
 
 ;; -------------------------
 ;; Page components
+(def json->clj
+   (.stringify js/JSON (js->clj "src/clj/mtask9/survey.json")))
 
 (defn home-page []
   (fn []
     [:span.main
+     [:h1 "jkh"]
+     [:p (js->clj "src/clj/mtask9/survey.json" :keywordize-keys true)]
      [:h1 "Welcome to mtask9"]
      [:ul
       [:li [:a {:href (path-for :items)} "Items of mtask9"]]
