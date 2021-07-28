@@ -1,11 +1,14 @@
 (ns mtask9.handler
   (:require
+   [compojure
+    [core :refer [defroutes GET]]
+    [route :refer [not-found resources]]]
    [reitit.ring :as reitit-ring]
    [mtask9.middleware :refer [middleware]]
+   [ring.middleware.format :refer [wrap-restful-format]]
    [hiccup.page :refer [include-js include-css html5]]
    [config.core :refer [env]]
-   [clojure.data.json :as json]
-   ))
+   [clojure.data.json :as json]))
 
 (def survey (json/read-str (slurp "src/clj/mtask9/survey.json")
                                 :key-fn keyword))
@@ -24,16 +27,17 @@
     )
 
 (def mount-target
-  (let [{title :title
-         questions :questions}
-        survey]
+ ;; (let [{title :title
+   ;;      questions :questions}
+     ;;   survey]
 
     [:div#app
-     [:h2 title]
-     [:p (str (first questions))]
-     [:div (question questions)]
+     [:h2 "title"]
+    ;;[:p (str (first questions))]
+     ;;[:div (question questions)]
      [:p "s"]
-     [:p "(Check the js console for hints if nothing exciting happens.)"]]))
+     [:p "(Check the js console for hints if nothing exciting happens.)"]])
+;;)
 
 (defn head []
   [:head
@@ -47,10 +51,19 @@
    (head)
    [:body {:class "body-container"}
     mount-target
-    (include-js "/js/aapp.js")
-    [:script "mtask9.core.init_BANG_()"]
+    (include-js "/js/app.js")
+   ;; [:script "mtask9.core.init_BANG_()"]
     ]))
 
+(defroutes routes
+  (GET "/" [] loading-page)
+  (GET "/about" [] loading-page)
+
+  (GET "/data" []
+    {:body {:vals [1 2 3 4]}})
+
+  (resources "/")
+  (not-found "Not Found"))
 
 (defn index-handler
   [_request]
@@ -58,7 +71,10 @@
    :headers {"Content-Type" "text/html"}
    :body (loading-page)})
 
-(def app
+(def app (-> #'routes
+             middleware
+             wrap-restful-format))
+(def app1
   (reitit-ring/ring-handler
    (reitit-ring/router
     [["/" {:get {:handler index-handler}}]

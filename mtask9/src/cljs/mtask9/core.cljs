@@ -5,7 +5,25 @@
    [reagent.session :as session]
    [reitit.frontend :as reitit]
    [clerk.core :as clerk]
-   [accountant.core :as accountant]))
+   [accountant.core :as accountant]
+   [ajax.core :refer [GET POST]]))
+
+(def state (reagent/atom {:vals []}))
+
+(defn home-page []
+  (GET "/data" {:params {}
+                :handler (fn [r] (reset! state r))
+                :error-handler (fn [r] (prn r))
+                :response-format :json
+                :keywords? true})
+  (fn []
+    [:div [:h2 "Welcome to reagentnew"]
+     [:div [:a {:href "/about"} "go to about page"]
+      [:ul
+       (for [i (:vals @state)]
+         [:li {:key i} "got " i " from the server"])]]]))
+
+
 
 ;; -------------------------
 ;; Routes
@@ -25,18 +43,16 @@
 
 ;; -------------------------
 ;; Page components
-(def json->clj
-   (.stringify js/JSON (js->clj "src/clj/mtask9/survey.json")))
 
-(defn home-page []
-  (fn []
-    [:span.main
-     [:h1 "jkh"]
-     [:p (js->clj "src/clj/mtask9/survey.json" :keywordize-keys true)]
-     [:h1 "Welcome to mtask9"]
-     [:ul
-      [:li [:a {:href (path-for :items)} "Items of mtask9"]]
-      [:li [:a {:href "/broken/link"} "Broken link"]]]]))
+;;(defn home-page []
+;;  (fn []
+ ;;   [:span.main
+ ;;    [:h1 "jkh"]
+ ;;    [:p "ddd"]
+  ;;   [:h1 "Welcome to mtask9"]
+    ;; [:ul
+      ;;[:li [:a {:href (path-for :items)} "Items of mtask9"]]
+      ;;[:li [:a {:href "/broken/link"} "Broken link"]]]]))
 
 
 

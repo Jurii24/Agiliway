@@ -5,6 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
   :dependencies [[org.clojure/clojure "1.10.3"]
+; Starting Jack-in Terminal: npx shadow-cljs -d cider/cider-nrepl:0.26.0 watch :app
                  [ring-server "0.5.0"]
                  [reagent "1.1.0"]
                  [reagent-utils "0.3.3"]
@@ -19,7 +20,9 @@
                  [metosin/reitit "0.5.12"]                 
                  [pez/clerk "1.0.0"]
                  [venantius/accountant "0.2.5"
-                  :exclusions [org.clojure/tools.reader]]]
+                  :exclusions [org.clojure/tools.reader]]
+                 [ring-middleware-format "0.7.4"]
+                 [cljs-ajax "0.7.5"]]
 
   :jvm-opts ["-Xmx1G"]
   
