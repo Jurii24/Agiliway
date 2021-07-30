@@ -3,37 +3,13 @@
    [reitit.ring :as reitit-ring]
    [mtask9.middleware :refer [middleware]]
    [hiccup.page :refer [include-js include-css html5]]
-   [config.core :refer [env]]
-   [clojure.data.json :as json]
-   ))
-
-(def survey (json/read-str (slurp "src/clj/mtask9/survey.json")
-                                :key-fn keyword))
-
-(defn ques [text]
-  [:p  text])
-
-(defn question [questions]
-  (loop [quest (first questions)
-        questions (rest questions)]
-
-    (ques (:question quest))
-    (prn (:question quest))
-    (if (>= (count questions) 1) 
-      (recur (first questions) (rest questions))))
-    )
+   [config.core :refer [env]]))
 
 (def mount-target
-  (let [{title :title
-         questions :questions}
-        survey]
-
-    [:div#app
-     [:h2 title]
-     [:p (str (first questions))]
-     [:div (question questions)]
-     [:p "s"]
-     [:p "(Check the js console for hints if nothing exciting happens.)"]]))
+  [:div#app
+   [:h2 "Welcome to mtask9"]
+   [:p "please wait while Figwheel/shadow-cljs is waking up ..."]
+   [:p "(Check the js console for hints if nothing exciting happens.)"]])
 
 (defn head []
   [:head
@@ -47,9 +23,8 @@
    (head)
    [:body {:class "body-container"}
     mount-target
-    (include-js "/js/aapp.js")
-    [:script "mtask9.core.init_BANG_()"]
-    ]))
+    (include-js "/js/app.js")
+    [:script "mtask9.core.init_BANG_()"]]))
 
 
 (defn index-handler
@@ -57,6 +32,17 @@
   {:status 200
    :headers {"Content-Type" "text/html"}
    :body (loading-page)})
+
+(defn json-handler
+  [_request]
+  {:status 200
+   :headers {"Content-Type" "application/json"}
+   :body (slurp "resources/json/survey.json")})
+
+;;(defroutes app1
+;;  (GET "/" [] "<h1>Hello World</h1>")
+;;  (GET "/data" [] json-handler)
+;;  (route/not-found "<h1>Page not found</h1>"))
 
 (def app
   (reitit-ring/ring-handler
@@ -66,7 +52,8 @@
       ["" {:get {:handler index-handler}}]
       ["/:item-id" {:get {:handler index-handler
                           :parameters {:path {:item-id int?}}}}]]
-     ["/about" {:get {:handler index-handler}}]])
+     ["/about" {:get {:handler index-handler}}]
+     ["/data" {:get {:handler json-handler}}]])
    (reitit-ring/routes
     (reitit-ring/create-resource-handler {:path "/" :root "/public"})
     (reitit-ring/create-default-handler))

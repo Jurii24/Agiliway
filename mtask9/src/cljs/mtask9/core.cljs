@@ -5,8 +5,20 @@
    [reagent.session :as session]
    [reitit.frontend :as reitit]
    [clerk.core :as clerk]
-   [accountant.core :as accountant]))
+   [accountant.core :as accountant]
 
+   
+   [re-frame.core :as re-frame]
+   [mtask9.events :as events]
+   [mtask9.views :as views]
+   [mtask9.config :as config]
+   ))
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;OLD VERSION;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; -------------------------
 ;; Routes
 
@@ -25,15 +37,12 @@
 
 ;; -------------------------
 ;; Page components
-(def json->clj
-   (.stringify js/JSON (js->clj "src/clj/mtask9/survey.json")))
 
 (defn home-page []
   (fn []
     [:span.main
-     [:h1 "jkh"]
-     [:p (js->clj "src/clj/mtask9/survey.json" :keywordize-keys true)]
      [:h1 "Welcome to mtask9"]
+     [:h2 313123]
      [:ul
       [:li [:a {:href (path-for :items)} "Items of mtask9"]]
       [:li [:a {:href "/broken/link"} "Broken link"]]]]))
@@ -93,10 +102,10 @@
 ;; -------------------------
 ;; Initialize app
 
-(defn mount-root []
+(defn mount-root1 []
   (rdom/render [current-page] (.getElementById js/document "app")))
 
-(defn init! []
+(defn init1! []
   (clerk/initialize!)
   (accountant/configure-navigation!
    {:nav-handler
@@ -113,4 +122,24 @@
     (fn [path]
       (boolean (reitit/match-by-path router path)))})
   (accountant/dispatch-current!)
+  (mount-root1))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+(defn dev-setup []
+  (when config/debug?
+    (println "dev mode")))
+
+(defn ^:dev/after-load mount-root []
+  (re-frame/clear-subscription-cache!)
+  (let [root-el (.getElementById js/document "app")]
+    (rdom/unmount-component-at-node root-el)
+    (rdom/render [views/main-panel] root-el)))
+
+(defn init! []
+  (re-frame/dispatch-sync [::events/initialize-db])
+  (dev-setup)
   (mount-root))

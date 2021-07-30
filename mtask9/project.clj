@@ -8,6 +8,10 @@
                  [ring-server "0.5.0"]
                  [reagent "1.1.0"]
                  [reagent-utils "0.3.3"]
+                 [re-frame "1.2.0"]
+                 [cljs-ajax "0.7.5"]
+                 [day8.re-frame/http-fx "0.2.3"]
+                 [binaryage/devtools "1.0.3"]
                  [cljsjs/react "17.0.2-0"]
                  [cljsjs/react-dom "17.0.2-0"]
                  [ring "1.8.1"]
@@ -16,7 +20,7 @@
                  [yogthos/config "1.1.7"]
                  [org.clojure/clojurescript "1.10.866"
                   :scope "provided"]
-                 [metosin/reitit "0.5.12"]                 
+                 [metosin/reitit "0.5.12"]
                  [pez/clerk "1.0.0"]
                  [venantius/accountant "0.2.5"
                   :exclusions [org.clojure/tools.reader]]]
@@ -94,7 +98,6 @@
                                   [nrepl "0.8.3"]
                                   [thheller/shadow-cljs "2.14.3"]
                                   [pjstadig/humane-test-output "0.10.0"]
-                                  [org.clojure/data.json "2.0.1"]
                                   
  ]
 
