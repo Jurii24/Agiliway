@@ -11,7 +11,6 @@
  (fn [_ _]
    db/default-db))
 
-
 (re-frame/reg-event-fx
  ::something
  (fn [{db :db} _] 
@@ -21,10 +20,27 @@
                  :format (ajax/json-response-format)
                  :response-format (ajax/json-response-format {:keywords? true})
                  :on-success      [::generate-db]
-                 :on-failure      [:bad-http-result]}}))          
+                 :on-failure      [:bad-http-result]}}))  
+
+(re-frame/reg-event-fx
+ ::http-post
+ (fn [_world [_ val]]
+   {:http-xhrio {:method          :post
+                 :uri             "https://localhost:3000/post"
+                 :params          {:data 123}
+                 :timeout         5000
+                 :format          (ajax/json-request-format)
+                 :response-format (ajax/json-response-format {:keywords? true})
+                 :on-success      [::success-post-result]
+                 :on-failure      [::failure-post-result]}}))
 
 (re-frame/reg-event-db
  ::generate-db
  (fn [db [_ response]]
    (assoc db :data
           (js->clj response))))
+
+(re-frame/reg-event-db
+ ::success-http-result
+ (fn [db [_ result]]
+   (assoc db :success-http-result result)))
