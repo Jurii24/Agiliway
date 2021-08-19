@@ -11,6 +11,8 @@
 (defn to-keyword [num]
   (keyword (str num)))
 
+(def answer-atom (atom {}))
+
 (def id-atom (atom {}))
 
 (defn add-to-atom [num id]
@@ -73,29 +75,60 @@
              (conj out (get-ids (first ids))))
       out)))
 
-(defn form-handler [event]
-  (loop [coun (range (count @id-atom))
+(defn add-answer [c1 data answers]
+  (loop [vas {}
+         val (-> data :results (get c1) :values)
+         ans (range (count answers))]
+    (if-not (= 0 (count ans))
+      (recur (assoc vas (first val) (if (get answers (first ans)) 1 0))
+             (rest val)
+             (rest ans))
+      (assoc-in data [:results c1 :values] vas))))
+
+(defn ldata [c1 data]
+  (if (-> data :results (get c1) (contains? :values))
+    (add-answer c1 data (get-values ((to-keyword c1) @id-atom)))
+    (assoc-in data [:results c1 :values] (get-values ((to-keyword c1) @id-atom)))))
+
+(defn form-handler [event data]
+  (loop [data data
+         coun (range (count @id-atom))
          c1 (first coun)]
     ;;(.-style.backgroundColor t "red")
     ;;(.log js/console (js->clj (.-value t1)))   "div > p"
-     (prn (get-values ((to-keyword c1) @id-atom)))
-    (when (> (count coun) 1)
-      (recur (rest coun) (second coun)))
+    (if (> (count coun) 0)
+      (recur (ldata c1 data) (rest coun) (second coun))
+      (prn data)
+      ;;(re-frame/dispatch [::events/http-post])
+      )
+    
     ;;(js/console.log @id-atom)
     ));;(js/alert "None filled"))));;(if (= "t" (last ids)) "t" "f"))))
- 
+
+(defn rename-keys
+  [map kmap]
+  (reduce
+   (fn [m [old new]]
+     (if (contains? map old)
+       (assoc m new (get map old))
+       m))
+   (apply dissoc map (keys kmap)) kmap)) 
+
 (defn main-panel []
-  (let [upd (re-frame/dispatch [::events/something])
+  (let [upd (re-frame/dispatch [::events/http-get])
         data (re-frame/subscribe [::subs/data])]
     (fn []
       [:div
        [:title (:title @data)]
        [:h2 (:title @data)]
-       (let [quest (->> @data :questions)]
+       (let [quest (->> @data :questions)
+             ;;answers (swap! answer-atom merge @data)
+             ]
          [:form {:id "form"} ;;(:on-submit #(on-submit %)) ;;(:on-submit #(prn %));;{:method "POST"} ;;:action "/thanks" 
           (for [x quest]
             [:div
              [:h3 (:question x)]
              (quest-type (assoc x :num (.indexOf quest x)))])
           [:input {:type "submit" :value "Submit"
-                   :on-click #(do (.preventDefault %) (form-handler %))}]])])))
+                   :on-click #(do (.preventDefault %) 
+                                  (form-handler % (rename-keys @data {:questions :results})))}]])])))

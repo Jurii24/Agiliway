@@ -12,10 +12,10 @@
    db/default-db))
 
 (re-frame/reg-event-fx
- ::something
+ ::http-get
  (fn [{db :db} _] 
    {:http-xhrio {:method          :get
-                 :uri             "http://localhost:3000/data"
+                 :uri             "http://localhost:3000/questions"
                  :timeout         8000
                  :format (ajax/json-response-format)
                  :response-format (ajax/json-response-format {:keywords? true})
@@ -26,8 +26,8 @@
  ::http-post
  (fn [_world [_ val]]
    {:http-xhrio {:method          :post
-                 :uri             "https://localhost:3000/post"
-                 :params          {:data 123}
+                 :uri             "http://localhost:3000/post"
+                 :params          val
                  :timeout         5000
                  :format          (ajax/json-request-format)
                  :response-format (ajax/json-response-format {:keywords? true})
@@ -44,3 +44,9 @@
  ::success-http-result
  (fn [db [_ result]]
    (assoc db :success-http-result result)))
+
+(re-frame/reg-event-db
+ ::failure-post-result
+ (fn [db [_ result]]
+    ;; result is a map containing details of the failure
+   (assoc db :failure-http-result result)))
