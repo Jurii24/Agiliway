@@ -25,10 +25,11 @@
 (re-frame/reg-event-fx
  ::http-post
  (fn [_world [_ val]]
-   {:http-xhrio {:method          :post
-                 :uri             "http://localhost:3000/post"
-                 :params          val
-                 :timeout         5000
+   {:http-xhrio {:uri             "http://localhost:3000/post"
+                 :method          :post
+                 :params          {:data "val000000000000000000"}
+                 ;;:url-params          {:data "val000000000000000000"}
+                 ;;:timeout         5000
                  :format          (ajax/json-request-format)
                  :response-format (ajax/json-response-format {:keywords? true})
                  :on-success      [::success-post-result]
@@ -41,12 +42,17 @@
           (js->clj response))))
 
 (re-frame/reg-event-db
- ::success-http-result
+ ::success-post-result
  (fn [db [_ result]]
-   (assoc db :success-http-result result)))
+   (prn "ttttt")
+   ;;(assoc db :success-post-result result)
+   ))
+
 
 (re-frame/reg-event-db
  ::failure-post-result
  (fn [db [_ result]]
     ;; result is a map containing details of the failure
-   (assoc db :failure-http-result result)))
+   (prn "fffff")
+   ;;(assoc db :failure-http-result result)
+   ))

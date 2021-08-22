@@ -1,8 +1,13 @@
 (ns mtask9.views
+  ;;(:use [net.cgrand.enlive-html])
   (:require
    [re-frame.core :as re-frame]
    [mtask9.events :as events]
-   [mtask9.subs :as subs]))
+   [mtask9.subs :as subs]
+   
+   
+  ;; [ring.util.anti-forgery :refer [anti-forgery-field]]
+   ))
 
 (defn required? [question]
   (if (and (:required question) (= true (:required question)))
@@ -10,8 +15,6 @@
 
 (defn to-keyword [num]
   (keyword (str num)))
-
-(def answer-atom (atom {}))
 
 (def id-atom (atom {}))
 
@@ -98,8 +101,8 @@
     ;;(.log js/console (js->clj (.-value t1)))   "div > p"
     (if (> (count coun) 0)
       (recur (ldata c1 data) (rest coun) (second coun))
-      (prn data)
-      ;;(re-frame/dispatch [::events/http-post])
+      ;;(prn data)
+      ((re-frame/dispatch [::events/http-post]) data)
       )
     
     ;;(js/console.log @id-atom)
@@ -124,7 +127,7 @@
        (let [quest (->> @data :questions)
              ;;answers (swap! answer-atom merge @data)
              ]
-         [:form {:id "form"} ;;(:on-submit #(on-submit %)) ;;(:on-submit #(prn %));;{:method "POST"} ;;:action "/thanks" 
+         [:form {:id "form"} ;;(append (html-snippet (anti-forgery-field))) ;;(:on-submit #(on-submit %)) ;;(:on-submit #(prn %));;{:method "POST"} ;;:action "/thanks" 
           (for [x quest]
             [:div
              [:h3 (:question x)]
