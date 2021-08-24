@@ -5,7 +5,6 @@
    [hiccup.page :refer [include-js include-css html5]]
    [config.core :refer [env]]
 
-   
    [compojure.core :refer [defroutes GET POST]]
    [compojure.route :as route]
    [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
@@ -18,7 +17,7 @@
    ;;[ring.middleware.json :as json]
    ;;[clojure.data.json :as json]
    [cheshire.core :as ch]
-   ))
+   [clojure.edn :as edn]))
 
 (def results-atom (atom {}))
 
@@ -57,26 +56,21 @@
 
 (defn json-results
   [_request]
-  ;;(println (:title results-atom))
-  )
+  {:status 200
+   :headers {"Content-Type" "application/json"}
+   :body (ch/generate-string @results-atom)})
 
 (defn json-post [_request]
-  (let [ans (pr-str (ch/parse-string (slurp (:body _request)) true))]
-  ;;(swap! results-atom merge ans)
-    (prn ans)
-    ;;(prn (str (first ans)))
-  ;;(response/ok (slurp "json"))
-  ))
+  (let [ans (edn/read-string (pr-str (ch/parse-string (slurp (:body _request)) true)))]
+    (if (empty? @results-atom)
+      (swap! results-atom merge ans)
+      (prn "nempt"))))
 
 (defroutes app-routes
   (GET "/" [] index-handler)
   (GET "/questions" [] json-get)
   (GET "/results" [] json-results)
-   (POST "/post" [] json-post)
-    ;;(let [body (json/read-str (slurp (:body request)))]
-      ;;(println (str "-" "=" "-request")));;)
-  ;;(println site-defaults)
-   ;;(POST "/post" [] )
+  (POST "/post" [] json-post)
   (route/not-found "<h1>Page not found</h1>"))
 
 ;;(def app (wrap-defaults app-routes site-defaults))

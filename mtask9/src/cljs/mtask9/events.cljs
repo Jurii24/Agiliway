@@ -28,7 +28,6 @@
    {:http-xhrio {:method          :post
                  :uri             "http://localhost:3000/post"
                  :params          val
-                 ;;:url-params          {:data "val000000000000000000"}
                  :timeout         8000
                  :format          (ajax/json-request-format)
                  :response-format (ajax/json-response-format {:keywords? true})
@@ -53,6 +52,5 @@
  (fn [db [_ val result]]
     ;; result is a map containing details of the failure
    (prn (str val "sssss" result "fffff"))
-  ;; (clj->js val)
    ;;(assoc db :failure-http-result result)
    ))

@@ -1,12 +1,8 @@
 (ns mtask9.views
-  ;;(:use [net.cgrand.enlive-html])
   (:require
    [re-frame.core :as re-frame]
    [mtask9.events :as events]
    [mtask9.subs :as subs]
-   
-   
-  ;; [ring.util.anti-forgery :refer [anti-forgery-field]]
    ))
 
 (defn required? [question]
@@ -102,7 +98,6 @@
     (if (> (count coun) 0)
       (recur (ldata c1 data) (rest coun) (second coun))
       (re-frame/dispatch [::events/http-post data])) ;;(.stringify js/JSON (clj->js data))
-
     ;;(js/console.log @id-atom)
     ));;(js/alert "None filled"))));;(if (= "t" (last ids)) "t" "f"))))
 
@@ -122,14 +117,12 @@
       [:div
        [:title (:title @data)]
        [:h2 (:title @data)]
-       (let [quest (->> @data :questions)
-             ;;answers (swap! answer-atom merge @data)
-             ]
-         [:form {:id "form"} ;;(append (html-snippet (anti-forgery-field))) ;;(:on-submit #(on-submit %)) ;;(:on-submit #(prn %));;{:method "POST"} ;;:action "/thanks" 
+       (let [quest (->> @data :questions)]
+         [:form {:id "form"} ;;(:on-submit #(on-submit %)) ;;(:on-submit #(prn %)) ;;:action "/thanks" 
           (for [x quest]
             [:div
              [:h3 (:question x)]
              (quest-type (assoc x :num (.indexOf quest x)))])
           [:input {:type "submit" :value "Submit"
-                   :on-click #(do (.preventDefault %) 
+                   :on-click #(do (.preventDefault %)
                                   (form-handler % (rename-keys @data {:questions :results})))}]])])))
