@@ -10,7 +10,7 @@
                  [reagent-utils "0.3.3"]
                  [re-frame "1.2.0"]
                  [cljs-ajax "0.7.5"]
-                 [compojure "1.6.2"]
+                 [cheshire "5.10.0"]
                  [day8.re-frame/http-fx "0.2.3"]
                  [binaryage/devtools "1.0.3"]
                  [cljsjs/react "17.0.2-0"]

@@ -16,7 +16,11 @@
 ;; [ring.middleware.basic-authentication :refer :all]
    ;;[ring.middleware.defaults :refer [wrap-defaults site-defaults]]
    ;;[ring.middleware.json :as json]
+   ;;[clojure.data.json :as json]
+   [cheshire.core :as ch]
    ))
+
+(def results-atom (atom {}))
 
 (def mount-target
   [:div#app
@@ -51,14 +55,23 @@
    :headers {"Content-Type" "application/json"}
    :body (slurp "resources/json/survey.json")})
 
-(defn json-post [_request]
-  (prn _request)
-  ;;(response/ok (slurp "json"))
+(defn json-results
+  [_request]
+  ;;(println (:title results-atom))
   )
+
+(defn json-post [_request]
+  (let [ans (pr-str (ch/parse-string (slurp (:body _request)) true))]
+  ;;(swap! results-atom merge ans)
+    (prn ans)
+    ;;(prn (str (first ans)))
+  ;;(response/ok (slurp "json"))
+  ))
 
 (defroutes app-routes
   (GET "/" [] index-handler)
   (GET "/questions" [] json-get)
+  (GET "/results" [] json-results)
    (POST "/post" [] json-post)
     ;;(let [body (json/read-str (slurp (:body request)))]
       ;;(println (str "-" "=" "-request")));;)

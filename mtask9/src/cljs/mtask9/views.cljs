@@ -101,10 +101,8 @@
     ;;(.log js/console (js->clj (.-value t1)))   "div > p"
     (if (> (count coun) 0)
       (recur (ldata c1 data) (rest coun) (second coun))
-      ;;(prn data)
-      ((re-frame/dispatch [::events/http-post]) data)
-      )
-    
+      (re-frame/dispatch [::events/http-post data])) ;;(.stringify js/JSON (clj->js data))
+
     ;;(js/console.log @id-atom)
     ));;(js/alert "None filled"))));;(if (= "t" (last ids)) "t" "f"))))
 
