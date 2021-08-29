@@ -9,17 +9,23 @@
    [compojure.route :as route]
    [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
    ;;[ring.util.http-response :as response]
-;; [myblog.views :as views]
-;; [myblog.posts :as posts]
 ;; [ring.util.response :as resp]
 ;; [ring.middleware.basic-authentication :refer :all]
    ;;[ring.middleware.defaults :refer [wrap-defaults site-defaults]]
    ;;[ring.middleware.json :as json]
-   ;;[clojure.data.json :as json]
    [cheshire.core :as ch]
    [clojure.edn :as edn]))
 
 (def results-atom (atom {}))
+
+(defn merge-results [new-result]
+  (for [num-question (range (count new-result))]
+    (if (= (:type (get new-result num-question)) "free-text")
+      (when (:values (get new-result num-question))
+        (swap! results-atom update :results update num-question update :values conj
+               (first (:values (get new-result num-question)))))
+      (swap! results-atom update :results update num-question assoc :values
+             (merge-with + (:values (get new-result num-question)) (:values (get (:results @results-atom) num-question)))))))
 
 (def mount-target
   [:div#app
@@ -61,10 +67,10 @@
    :body (ch/generate-string @results-atom)})
 
 (defn json-post [_request]
-  (let [ans (edn/read-string (pr-str (ch/parse-string (slurp (:body _request)) true)))]
+  (let [result (edn/read-string (pr-str (ch/parse-string (slurp (:body _request)) true)))]
     (if (empty? @results-atom)
-      (swap! results-atom merge ans)
-      (prn "nempt"))))
+      (swap! results-atom merge result)
+      (merge-results (:results result)))))
 
 (defroutes app-routes
   (GET "/" [] index-handler)
@@ -75,7 +81,6 @@
 
 ;;(def app (wrap-defaults app-routes site-defaults))
 (def app (wrap-defaults app-routes (assoc-in site-defaults [:security :anti-forgery] false)))
-
 
 
 
@@ -102,26 +107,6 @@
 ;;    {:status 200
 ;;     :headers {"Content-Type" "text/html"}
 ;;     :body (loading-page)})
-;;  (defn json-get
-;;    [_request]
-;;    {:status 200
-;;     :headers {"Content-Type" "application/json"}
-;;     :body (slurp "resources/json/survey.json")})
-;;  (def ar (atom {:title "" :results []}))
-;;  (defn json-results
-;;    [_request]
-;;    {:status 200
-;;     :headers {"Content-Type" "application/json"}
-;;     :body (str @ar)})
-;;  (defn json-post
-;;    [_request]
-;;    {:status 200
-;;     :headers {"Content-Type" "application/json"}
-;;     :body "csssss"})
-;;  ;;(defroutes app1
-;;  ;;  (GET "/" [] "<h1>Hello World</h1>")
-;;  ;;  (GET "/data" [] json-handler)
-;;  ;;  (route/not-found "<h1>Page not found</h1>"))
 ;;  (defn positions [pred coll]
 ;;    (keep-indexed (fn [idx x]
 ;;                    (when (pred x)
@@ -145,16 +130,12 @@
 ;;  (def app
 ;;    (reitit-ring/ring-handler
 ;;     (reitit-ring/router
-;;      [["/" {:get {:handler index-handler}
-;;             :post {:handler json-post}
-;;             }]
+;;      [["/" {:get {:handler index-handler}}]
 ;;       ["/items"
 ;;        ["" {:get {:handler index-handler}}]
 ;;        ["/:item-id" {:get {:handler index-handler
 ;;                            :parameters {:path {:item-id int?}}}}]]
 ;;       ["/questions" {:get {:handler json-get}}]
-;;       ["/post" {:post {:handler json-results}}]
-;;       ["/results" {:get {:handler json-results}}]])
 ;;     (reitit-ring/routes
 ;;      (reitit-ring/create-resource-handler {:path "/" :root "/public"})
 ;;      (reitit-ring/create-default-handler))

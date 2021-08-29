@@ -43,7 +43,7 @@
 (re-frame/reg-event-db
  ::success-post-result
  (fn [db [_ result]]
-   val
+   result
    ;;(assoc db :success-post-result result)
    ))
 

@@ -3,7 +3,7 @@
                    "type": "free-text",
                    "required": false},
                   {"question": "Do you like this survey?",
-                   "required": true,
+                   "required": false,
                    "type": "single-choice",
                    "values": ["Yes", "No"]},
                   {"question": "What are your favorite fruits?",
