@@ -2,7 +2,6 @@
   (:require
    [re-frame.core :as re-frame]
    [mtask9.db :as db]
-   
    [day8.re-frame.http-fx]
    [ajax.core :as ajax]))
 

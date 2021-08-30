@@ -3,19 +3,15 @@
    [re-frame.core :as re-frame]
    [mtask9.events :as events]
    [mtask9.subs :as subs]
-   [goog.array :as garray]
-   ))
+   [goog.array :as garray]))
 
 (defn required? [question]
-  (if (and (:required question) (= true (:required question)))
-    "t" "f"))
+  (and (:required question) (= true (:required question))))
 
 (defn to-keyword [num]
   (keyword (str num)))
 
-(def ch-atom (atom []))
-(def id-atom (atom {}))
-
+(def id-atom (atom {}))  ;;contains all elements ids {:id-question id-answer}
 
 (defn get-ids [id]
   (let [question (js/document.querySelector (str "#" id))]
@@ -31,11 +27,12 @@
              (conj out (get-ids (first ids))))
       out)))
 
-(defn clear-order []
-  (for [group-checkbox @ch-atom
-        :when (contains? (get-values ((to-keyword group-checkbox) @id-atom)) true)]
+(defn check-checkbox [num]  ;;if some answer is true - will turn off ":required"
+  (if (= -1 (.indexOf (get-values ((to-keyword num) @id-atom)) true))
+    (run! #(set! (.-required %) true)
+          (garray/toArray (.getElementsByName js/document. (str num))))
     (run! #(set! (.-required %) false)
-          (garray/toArray (.getElementsByName js/document. (str group-checkbox))))))
+          (garray/toArray (.getElementsByName js/document. (str num))))))
 
 (defn add-to-atom [num id]
   (let [num (to-keyword num)]
@@ -51,9 +48,19 @@
              :id id
              :name num
              :placeholder "Enter your answer here"
-             :required (if (= "t" (required? question)) true false)}]))
+             :required (required? question)}]))
 
 (defn form-radio [question]
+  (let [values (:values question)
+        num (:num question)]
+    (for [value values
+          :let [id (str (required? question) "-" num "-" (.indexOf values value))
+                add-id (add-to-atom num id)]]
+      [:div
+       [:input {:type "radio" :id id :name num :value value :required (required? question)}]
+       [:label value]])))
+
+(defn form-checkbox [question]
   (let [values (:values question)
         num (:num question)
         required (required? question)]
@@ -61,19 +68,8 @@
           :let [id (str required "-" num "-" (.indexOf values value))
                 add-id (add-to-atom num id)]]
       [:div
-       [:input {:type "radio" :id id :name num :value value :required (if (= "t" required) true false)}] 
-       [:label value]])))
-
-(defn form-checkbox [question]
-  (let [values (:values question)
-        num (:num question)
-        required (required? question)
-        add-ch (when (= "t" required?) (swap! ch-atom conj num))]
-    (for [value values
-          :let [id (str required "-" num "-" (.indexOf values value))
-                add-id (add-to-atom num id)]]
-      [:div
-       [:input {:type "checkbox" :id id :name num :value value :required (if (= "t" required) true false) :onChange (when (= "t" required) (clear-order))}];;(js/setInterval #(clear-order) 1000)
+       [:input {:type "checkbox" :id id :name num :value value :required required
+                :onChange #(when required (check-checkbox num))}]
        [:label value]])))
 
 (defmulti quest-type (fn [question] (:type question)))
@@ -81,35 +77,29 @@
 (defmethod quest-type "single-choice" [question] (form-radio question))
 (defmethod quest-type "multiple-choice" [question] (form-checkbox question))
 
-
-(defn add-answer [num data answers]
-  (loop [vas {}
+(defn add-answer [num data answ]
+  (loop [val-with-answ {}
          val (-> data :results (get num) :values)
-         count-answers (range (count answers))]
+         count-answers (range (count answ))]
     (if-not (= 0 (count count-answers))
-      (recur (assoc vas (first val) (if (get answers (first count-answers)) 1 0))
+      (recur (assoc val-with-answ (first val) (if (get answ (first count-answers)) 1 0))
              (rest val)
              (rest count-answers))
-      (assoc-in data [:results num :values] vas))))
+      (assoc-in data [:results num :values] val-with-answ))))
 
-(defn ldata [num data]
+(defn filling-data [num data]  ;;{:question 1} if this question is checked (if not {:question 0})
   (if (-> data :results (get num) (contains? :values))
     (add-answer num data (get-values ((to-keyword num) @id-atom)))
     (assoc-in data [:results num :values] (get-values ((to-keyword num) @id-atom)))))
 
-(defn form-handler [event data]
+(defn form-handler [event data]  ;;generate hash-map "data" with answers
   (loop [data data
          num (range (count @id-atom))]
     (if (> (count num) 0)
-      (recur (ldata (first num) data) (rest num))
-      (re-frame/dispatch [::events/http-post data])) ;;(.stringify js/JSON (clj->js data))
-    )
-;; (let [jss (js/document.querySelector "t-2-Apple")])
-;; (.-required jss)
-  )
+      (recur (filling-data (first num) data) (rest num))
+      (re-frame/dispatch [::events/http-post data])))) ;;(.stringify js/JSON (clj->js data))
 
-(defn rename-keys
-  [map kmap]
+(defn rename-keys [map kmap]
   (reduce
    (fn [m [old new]]
      (if (contains? map old)
